@@ -5,7 +5,7 @@
 namespace ly
 {
 	Application::Application()
-		: mWindow{ sf::VideoMode(1024, 1440), "Light Years"},
+		: mWindow{ sf::VideoMode(1024, 1080), "Light Years"},   // war 1024, 1440
         mTargetFrameRate{60.f},
         mTickClock{}
 	{
@@ -31,19 +31,39 @@ namespace ly
             while (accumulatedTime > targetDeltaTime)
             {
                 accumulatedTime -= targetDeltaTime;
-                Tick(targetDeltaTime);
-                Render();
+                TickInternal(targetDeltaTime);
+                RenderInternal();
             }
             std::cout << "ticking at framerate: " << 1.f / frameDeltaTime << std::endl;
         }
 	}
-    void Application::Tick(float deltaTime)
+    void Application::TickInternal(float deltaTime)
     {
-        
+        Tick(deltaTime);
+    }
+
+    void Application::RenderInternal()
+    {
+        mWindow.clear();
+
+        Render();
+
+        mWindow.display();
     }
 
     void Application::Render()
     {
+        sf::RectangleShape rect{ sf::Vector2f{100, 100} };
+        rect.setFillColor(sf::Color::Green);
+        rect.setOrigin(50, 50);
+        rect.setPosition(mWindow.getSize().x / 2.f, mWindow.getSize().y / 2.f);
+        mWindow.draw(rect);
+    }
+
+    void Application::Tick(float deltaTime)
+    {
 
     }
+
+    
 }
